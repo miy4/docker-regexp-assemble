@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+__run_regexp_assemble() {
+    local docker_image="miy4/regexp-assemble"
+    local host_src_volume="${PWD}"
+    local container_dest_volume="/work"
+
+    docker run --interactive --rm \
+           --volume="${host_src_volume}:${container_dest_volume}" \
+           --workdir="${container_dest_volume}" \
+           "${docker_image}" \
+           perl -MRegexp::Assemble -nle 'BEGIN {$ra = Regexp::Assemble->new}; $ra->add($_); END {print $ra->re}' $@
+}
+
+__run_regexp_assemble $@
